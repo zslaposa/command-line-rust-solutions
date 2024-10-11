@@ -1,6 +1,5 @@
-use std::process::Command;
-use assert_cmd::cargo::CommandCargoExt;
 use pretty_assertions::assert_eq; 
+use assert_cmd::Command;
 
 #[test]
 fn runs() {
@@ -11,4 +10,12 @@ fn runs() {
     let std_out = String::from_utf8(output.stdout).expect("invalid UTF-8");
     assert_eq!(std_out, "Hello, world!\n");
     
+}
+
+
+#[test]
+fn true_ok() {
+    let mut cmd = Command::cargo_bin("true").unwrap();
+
+    cmd.assert().success();
 }
