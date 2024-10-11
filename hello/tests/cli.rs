@@ -8,8 +8,7 @@ fn runs() {
     
     assert!(output.status.success());
     let std_out = String::from_utf8(output.stdout).expect("invalid UTF-8");
-    assert_eq!(std_out, "Hello, world!\n");
-    
+    assert_eq!(std_out, "Hello, world!\n");    
 }
 
 
@@ -18,4 +17,11 @@ fn true_ok() {
     let mut cmd = Command::cargo_bin("true").unwrap();
 
     cmd.assert().success();
+}
+
+#[test]
+fn false_ok() {
+    let mut cmd = Command::cargo_bin("false").unwrap();
+
+    cmd.assert().failure();
 }
