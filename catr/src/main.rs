@@ -61,20 +61,22 @@ fn run(args: Args) -> Result<()> {
             Ok(file) => {
                 let mut prev_num = 0;
                 for (line_num, line_result) in file.lines().enumerate() {
-                    let line = line_result?;
+                    let line_read = line_result?;
 
-                    if args.number_lines {
-                        println!("{:>6}\t{line}", line_num + 1)
-                    } else if args.number_nonblank_lines {
-                        if line.is_empty() {
-                            println!()
+                    
+                    let line = if args.number_lines {
+                            format!("{:>6}\t{line_read}", line_num + 1)
+                        } else if args.number_nonblank_lines {
+                            if line_read.is_empty() {
+                                format!("")
+                            } else {
+                                prev_num += 1;
+                                format!("{prev_num:>6}\t{line_read}")
+                            }
                         } else {
-                            prev_num += 1;
-                            println!("{prev_num:>6}\t{line}")
-                        }
-                    } else {
-                        println!("{line}")
-                    }
+                            format!("{line_read}")
+                        };
+                    println!("{}", line);
                 }
             }
         }
