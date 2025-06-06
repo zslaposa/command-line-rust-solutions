@@ -85,7 +85,8 @@ fn run(args: Args) -> Result<()> {
 }
 
 fn main() {
-    if let Err(e) = run(get_args()) {        
+    if let Err(err) = run(get_args()) {
+        eprintln!("{err}");
         std::process::exit(1);
     }
 }

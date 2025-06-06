@@ -11,7 +11,6 @@ const FOX: &str = "tests/inputs/fox.txt";
 const SPIDERS: &str = "tests/inputs/spiders.txt";
 const BUSTLE: &str = "tests/inputs/the-bustle.txt";
 
-// --------------------------------------------------
 #[test]
 fn usage() -> Result<()> {
     for flag in &["-h", "--help"] {
@@ -23,7 +22,6 @@ fn usage() -> Result<()> {
     Ok(())
 }
 
-// --------------------------------------------------
 fn gen_bad_file() -> String {
     loop {
         let filename: String = rand::thread_rng()
@@ -38,7 +36,6 @@ fn gen_bad_file() -> String {
     }
 }
 
-// --------------------------------------------------
 #[test]
 fn skips_bad_file() -> Result<()> {
     let bad = gen_bad_file();
@@ -51,7 +48,6 @@ fn skips_bad_file() -> Result<()> {
     Ok(())
 }
 
-// --------------------------------------------------
 fn run(args: &[&str], expected_file: &str) -> Result<()> {
     let expected = fs::read_to_string(expected_file)?;
     let output = Command::cargo_bin(PRG)?.args(args).output().unwrap();
@@ -63,7 +59,6 @@ fn run(args: &[&str], expected_file: &str) -> Result<()> {
     Ok(())
 }
 
-// --------------------------------------------------
 fn run_stdin(
     input_file: &str,
     args: &[&str],
@@ -83,13 +78,11 @@ fn run_stdin(
     Ok(())
 }
 
-// --------------------------------------------------
 #[test]
 fn bustle_stdin() -> Result<()> {
     run_stdin(BUSTLE, &["-"], "tests/expected/the-bustle.txt.stdin.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn bustle_stdin_n() -> Result<()> {
     run_stdin(
@@ -99,7 +92,6 @@ fn bustle_stdin_n() -> Result<()> {
     )
 }
 
-// --------------------------------------------------
 #[test]
 fn bustle_stdin_b() -> Result<()> {
     run_stdin(
@@ -109,55 +101,46 @@ fn bustle_stdin_b() -> Result<()> {
     )
 }
 
-// --------------------------------------------------
 #[test]
 fn empty() -> Result<()> {
     run(&[EMPTY], "tests/expected/empty.txt.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn empty_n() -> Result<()> {
     run(&["-n", EMPTY], "tests/expected/empty.txt.n.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn empty_b() -> Result<()> {
     run(&["-b", EMPTY], "tests/expected/empty.txt.b.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn fox() -> Result<()> {
     run(&[FOX], "tests/expected/fox.txt.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn fox_n() -> Result<()> {
     run(&["-n", FOX], "tests/expected/fox.txt.n.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn fox_b() -> Result<()> {
     run(&["-b", FOX], "tests/expected/fox.txt.b.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn spiders() -> Result<()> {
     run(&[SPIDERS], "tests/expected/spiders.txt.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn spiders_n() -> Result<()> {
     run(&["--number", SPIDERS], "tests/expected/spiders.txt.n.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn spiders_b() -> Result<()> {
     run(
@@ -166,37 +149,31 @@ fn spiders_b() -> Result<()> {
     )
 }
 
-// --------------------------------------------------
 #[test]
 fn bustle() -> Result<()> {
     run(&[BUSTLE], "tests/expected/the-bustle.txt.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn bustle_n() -> Result<()> {
     run(&["-n", BUSTLE], "tests/expected/the-bustle.txt.n.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn bustle_b() -> Result<()> {
     run(&["-b", BUSTLE], "tests/expected/the-bustle.txt.b.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn all() -> Result<()> {
     run(&[FOX, SPIDERS, BUSTLE], "tests/expected/all.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn all_n() -> Result<()> {
     run(&[FOX, SPIDERS, BUSTLE, "-n"], "tests/expected/all.n.out")
 }
 
-// --------------------------------------------------
 #[test]
 fn all_b() -> Result<()> {
     run(&[FOX, SPIDERS, BUSTLE, "-b"], "tests/expected/all.b.out")
