@@ -1,4 +1,7 @@
+use anyhow::Result;
 use clap::{Arg, Command };
+use std::fs::File;
+use std::io::{self, BufRead, BufReader};
 
 #[derive(Debug)]
 struct Args {
@@ -46,7 +49,27 @@ fn get_args() -> Args {
     }
 }
 
+fn open(filename: &str) -> Result<Box<dyn BufRead>> {
+    match filename {
+        "-" => Ok(Box::new(BufReader::new(io::stdin()))),
+        _ => Ok(Box::new(BufReader::new(File::open(filename)?))),
+    }
+}
+
+fn run(args: Args) -> Result<()> {
+    for file_name in args.files {
+        match open(&file_name) {
+            Err(err) => eprintln!("{file_name}: {err}"),
+            Ok(_) => println!("opened {file_name}"),
+        }
+    }
+
+    Ok(())
+}
+
 fn main() {
-    let args = get_args();
-    println!("{:#?}", args);
+    if let Err(err) = run(get_args()) {
+        eprintln!("{err}");
+        std::process::exit(1);
+    }
 }
