@@ -2,7 +2,7 @@ use anyhow::Result;
 use assert_cmd::Command;
 use predicates::prelude::*;
 use pretty_assertions::assert_eq;
-use rand::{distributions::Alphanumeric, Rng};
+use rand::{distr::Alphanumeric, Rng};
 use std::fs::{self, File};
 use std::io::prelude::*;
 
@@ -15,7 +15,7 @@ const TWELVE: &str = "./tests/inputs/twelve.txt";
 
 // --------------------------------------------------
 fn random_string() -> String {
-    rand::thread_rng()
+    rand::rng()
         .sample_iter(&Alphanumeric)
         .take(7)
         .map(char::from)
