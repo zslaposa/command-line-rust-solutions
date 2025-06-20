@@ -60,7 +60,17 @@ fn run(args: Args) -> Result<()> {
     for file_name in args.files {
         match open(&file_name) {
             Err(err) => eprintln!("{file_name}: {err}"),
-            Ok(_) => println!("opened {file_name}"),
+            Ok(mut file) => {            
+                let mut line = String::new();
+                for _ in 0..args.lines {
+                    let bytes = file.read_line(&mut line)?;
+                    if bytes == 0 {
+                        break;
+                    }
+                    print!("{line}");
+                    line.clear();
+                }
+            }
         }
     }
 
