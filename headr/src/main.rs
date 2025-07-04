@@ -1,12 +1,12 @@
 use anyhow::Result;
 use clap::{Arg, Command };
 use std::fs::File;
-use std::io::{self, BufRead, BufReader};
+use std::io::{self, BufRead, BufReader, Read};
 
 #[derive(Debug)]
 struct Args {
     files: Vec<String>,
-    lines: u64,
+    lines: i64,
     bytes: Option<u64>,
 }
 
@@ -28,8 +28,9 @@ fn get_args() -> Args {
                 .long("lines")
                 .help("Number of lines")
                 .num_args(1)
-                .value_parser(clap::value_parser!(u64).range(1..))
-                .default_value("10"),
+                .value_parser(clap::value_parser!(i64))
+                .default_value("10")
+                .allow_negative_numbers(true),
         )
         .arg(
             Arg::new("bytes")
@@ -79,14 +80,35 @@ fn run(args: Args) -> Result<()> {
                     )
 
                 } else {
-                    let mut line = String::new();
-                    for _ in 0..args.lines {
-                        let bytes = file.read_line(&mut line)?;
-                        if bytes == 0 {
-                            break;
+                    if args.lines >= 0 {
+                        let mut line = String::new();
+                        for _ in 0..args.lines {
+                            let bytes = file.read_line(&mut line)?;
+                            if bytes == 0 {
+                                break;
+                            }
+                            print!("{line}");
+                            line.clear();
                         }
-                        print!("{line}");
-                        line.clear();
+                    } else {
+                        let mut lines = Vec::new();
+                        let mut line = String::new();
+                        
+                        while file.read_line(&mut line)? > 0 {
+                            lines.push(line.clone());
+                            line.clear();
+                        }
+                        
+                        let lines_to_skip = (-args.lines) as usize;
+                        let lines_to_print = if lines.len() > lines_to_skip {
+                            lines.len() - lines_to_skip
+                        } else {
+                            0
+                        };
+                        
+                        for i in 0..lines_to_print {
+                            print!("{}", lines[i]);
+                        }
                     }
                 }
             }

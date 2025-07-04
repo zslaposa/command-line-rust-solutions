@@ -152,6 +152,17 @@ fn empty_n4() -> Result<()> {
     run(&[EMPTY, "-n", "4"], "tests/expected/empty.txt.n4.out")
 }
 
+#[test]
+fn empty_n_minus_2() -> Result<()> {
+    run(&[EMPTY, "-n", "-2"], "tests/expected/empty.txt.nm2.out")
+}
+
+// --------------------------------------------------
+#[test]
+fn empty_n_minus_4() -> Result<()> {
+    run(&[EMPTY, "-n", "-4"], "tests/expected/empty.txt.nm4.out")
+}
+
 // --------------------------------------------------
 #[test]
 fn empty_c2() -> Result<()> {
@@ -178,6 +189,16 @@ fn one_n2() -> Result<()> {
 #[test]
 fn one_n4() -> Result<()> {
     run(&[ONE, "-n", "4"], "tests/expected/one.txt.n4.out")
+}
+
+#[test]
+fn one_n_minus_2() -> Result<()> {
+    run(&[ONE, "-n", "-2"], "tests/expected/one.txt.nm2.out")
+}
+
+#[test]
+fn one_n_minus_4() -> Result<()> {
+    run(&[ONE, "-n", "-4"], "tests/expected/one.txt.nm4.out")
 }
 
 #[test]
@@ -242,6 +263,16 @@ fn two_n4() -> Result<()> {
 }
 
 #[test]
+fn two_n_minus_2() -> Result<()> {
+    run(&[TWO, "-n", "-2"], "tests/expected/two.txt.nm2.out")
+}
+
+#[test]
+fn two_n_minus_4() -> Result<()> {
+    run(&[TWO, "-n", "-4"], "tests/expected/two.txt.nm4.out")
+}
+
+#[test]
 fn two_c2() -> Result<()> {
     run(&[TWO, "-c", "2"], "tests/expected/two.txt.c2.out")
 }
@@ -290,6 +321,16 @@ fn three_n2() -> Result<()> {
 #[test]
 fn three_n4() -> Result<()> {
     run(&[THREE, "-n", "4"], "tests/expected/three.txt.n4.out")
+}
+
+#[test]
+fn three_n_minus_2() -> Result<()> {
+    run(&[THREE, "-n", "-2"], "tests/expected/three.txt.nm2.out")
+}
+
+#[test]
+fn three_n_minus_4() -> Result<()> {
+    run(&[THREE, "-n", "-4"], "tests/expected/three.txt.nm4.out")
 }
 
 #[test]
@@ -344,6 +385,16 @@ fn twelve_n4() -> Result<()> {
 }
 
 #[test]
+fn twelve_n_minus_2() -> Result<()> {
+    run(&[TWELVE, "-n", "-2"], "tests/expected/twelve.txt.nm2.out")
+}
+
+#[test]
+fn twelve_n_minus_4() -> Result<()> {
+    run(&[TWELVE, "-n", "-4"], "tests/expected/twelve.txt.nm4.out")
+}
+
+#[test]
 fn twelve_c2() -> Result<()> {
     run(&[TWELVE, "-c", "2"], "tests/expected/twelve.txt.c2.out")
 }
@@ -366,6 +417,16 @@ fn twelve_n2_stdin() -> Result<()> {
 #[test]
 fn twelve_n4_stdin() -> Result<()> {
     run_stdin(&["-n", "4"], TWELVE, "tests/expected/twelve.txt.n4.out")
+}
+
+#[test]
+fn twelve_n_minus_2_stdin() -> Result<()> {
+    run_stdin(&["-n", "-2"], TWELVE, "tests/expected/twelve.txt.nm2.out")
+}
+
+#[test]
+fn twelve_n_minus_4_stdin() -> Result<()> {
+    run_stdin(&["-n", "-4"], TWELVE, "tests/expected/twelve.txt.nm4.out")
 }
 
 #[test]
