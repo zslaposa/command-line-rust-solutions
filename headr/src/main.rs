@@ -2,6 +2,7 @@ use anyhow::Result;
 use clap::{Arg, Command };
 use std::fs::File;
 use std::io::{self, BufRead, BufReader, Read};
+use std::collections::VecDeque;
 
 #[derive(Debug)]
 struct Args {
@@ -91,23 +92,18 @@ fn run(args: Args) -> Result<()> {
                             line.clear();
                         }
                     } else {
-                        let mut lines = Vec::new();
+                        let lines_to_skip = (-args.lines) as usize;
+                        let mut buffer = VecDeque::new();
                         let mut line = String::new();
                         
                         while file.read_line(&mut line)? > 0 {
-                            lines.push(line.clone());
+                            buffer.push_back(line.clone());
+                            if buffer.len() > lines_to_skip {
+                                if let Some(line_to_print) = buffer.pop_front() {
+                                    print!("{}", line_to_print);
+                                }
+                            }
                             line.clear();
-                        }
-                        
-                        let lines_to_skip = (-args.lines) as usize;
-                        let lines_to_print = if lines.len() > lines_to_skip {
-                            lines.len() - lines_to_skip
-                        } else {
-                            0
-                        };
-                        
-                        for i in 0..lines_to_print {
-                            print!("{}", lines[i]);
                         }
                     }
                 }
