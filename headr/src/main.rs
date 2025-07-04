@@ -60,15 +60,25 @@ fn run(args: Args) -> Result<()> {
     for file_name in args.files {
         match open(&file_name) {
             Err(err) => eprintln!("{file_name}: {err}"),
-            Ok(mut file) => {            
-                let mut line = String::new();
-                for _ in 0..args.lines {
-                    let bytes = file.read_line(&mut line)?;
-                    if bytes == 0 {
-                        break;
+            Ok(mut file) => {
+                if let Some(num_bytes) = args.bytes {
+                    let mut buffer = vec![0; num_bytes as usize];
+                    let bytes_read = file.read(&mut buffer)?;
+                    print!(
+                        "{}",
+                        String::from_utf8_lossy(&buffer[..bytes_read])
+                    )
+
+                } else {
+                    let mut line = String::new();
+                    for _ in 0..args.lines {
+                        let bytes = file.read_line(&mut line)?;
+                        if bytes == 0 {
+                            break;
+                        }
+                        print!("{line}");
+                        line.clear();
                     }
-                    print!("{line}");
-                    line.clear();
                 }
             }
         }
