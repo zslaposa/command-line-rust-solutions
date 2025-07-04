@@ -57,10 +57,19 @@ fn open(filename: &str) -> Result<Box<dyn BufRead>> {
 }
 
 fn run(args: Args) -> Result<()> {
-    for file_name in args.files {
-        match open(&file_name) {
+    let num_of_files = args.files.len();
+
+    for (file_num, file_name) in args.files.iter().enumerate() {
+        match open(file_name) {
             Err(err) => eprintln!("{file_name}: {err}"),
             Ok(mut file) => {
+                if num_of_files > 1 {
+                    println!(
+                        "{}==> {file_name} <==",
+                        if file_num > 0 { "\n" } else { "" },
+                    );
+                }
+
                 if let Some(num_bytes) = args.bytes {
                     let mut buffer = vec![0; num_bytes as usize];
                     let bytes_read = file.read(&mut buffer)?;
