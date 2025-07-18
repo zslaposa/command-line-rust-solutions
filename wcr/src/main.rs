@@ -133,6 +133,11 @@ fn run(mut args: Args) -> Result<()> {
         args.words = true;
         args.bytes = true;
     }
+
+    let mut total_lines = 0;
+    let mut total_words = 0;
+    let mut total_bytes = 0;
+    let mut total_chars = 0;
     
     for filename in &args.files {
         match open(filename) {
@@ -146,8 +151,23 @@ fn run(mut args: Args) -> Result<()> {
                     format_count(file_info.num_chars, args.chars),
                     format_file_name(filename),
                 );
+
+                total_lines += file_info.num_lines;
+                total_words += file_info.num_words;
+                total_bytes += file_info.num_bytes;
+                total_chars += file_info.num_chars;
             }
         }
+    }
+
+    if args.files.len() > 1 {
+        println!(
+            "{}{}{}{} total", 
+            format_count(total_lines, args.lines), 
+            format_count(total_words, args.words),
+            format_count(total_bytes, args.bytes),
+            format_count(total_chars, args.chars),
+        );
     }
 
     Ok(())
